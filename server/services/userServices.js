@@ -25,3 +25,34 @@ exports.authorize = async (pass) => {
         throw new Error('Authorization failed');
     }
 };
+
+exports.changePassword = async (data) => {
+    try {
+        const oldPass = data.oldPassword;
+        const newPass = data.newPassword;
+
+
+        const userInDb = await User.findOne();
+
+        if (!userInDb) {
+            throw new Error('User not found');
+        }
+
+        const isMatch = await bcrypt.compare(oldPass, userInDb.password);
+
+        if (!isMatch) {
+            throw new Error('Invalid password');
+        }
+
+        const salt = await bcrypt.genSalt(12);
+
+        const hashedPass = await bcrypt.hash(newPass, salt);
+
+        userInDb.password = hashedPass;
+
+        await userInDb.save();
+    } catch (error) {
+        console.error(error);
+        throw new Error('Password change failed');
+    }
+}
