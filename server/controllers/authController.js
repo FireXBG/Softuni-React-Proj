@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const authServices = require('../services/userServices');
+const adminServices = require('../services/adminUserServices');
 const { isAuthorized } = require('../middlewares/authMiddlewares');
 
 router.post('/login', async (req, res) => {
@@ -24,6 +25,18 @@ router.post('/change-password', isAuthorized, async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(401).json({ message: 'Password change failed' });
+    }
+})
+
+router.post('/admin', isAuthorized, async (req, res) => {
+    const data = req.body;
+
+    try {
+        const token = await adminServices.authorizeAdmin(data);
+        res.json({ token });
+    } catch (error) {
+        console.error(error);
+        res.status(401).json({ message: 'Admin authorization failed' });
     }
 })
 
