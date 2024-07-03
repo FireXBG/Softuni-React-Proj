@@ -12,7 +12,6 @@ const tablesSchema = new Schema({
     orders: {
         type: Array,
         required: true,
-        ref: 'Menu'
     },
 })
 
