@@ -1,5 +1,14 @@
 const tables = require('../models/tablesSchema');
 
+exports.getTables = async () => {
+    try {
+        const tablesList = await tables.find();
+        return tablesList;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
 exports.takeTable = async (tableNumber) => {
     try {
         const table = await tables.findOne({ tableNumber });
