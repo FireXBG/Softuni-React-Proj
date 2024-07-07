@@ -9,10 +9,6 @@ const menuSchema = new Schema({
         type: Number,
         required: true,
     },
-    ingredients: {
-        type: Array,
-        required: true,
-    },
 })
 
 module.exports = model('Menu', menuSchema);

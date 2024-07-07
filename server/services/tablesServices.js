@@ -1,4 +1,5 @@
 const tables = require('../models/tablesSchema');
+const menu = require('../models/menuSchema');
 
 exports.getTables = async () => {
     try {
@@ -21,4 +22,26 @@ exports.takeTable = async (tableNumber) => {
     } catch (error) {
         throw new Error(error);
     }
+}
+
+exports.getMenu = async () => {
+    try {
+        const menuList = await menu.find();
+        console.log(menuList)
+        return menuList;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+exports.getTableByNumber = async (tableNumber) => {
+    try {
+        return await tables.findOne({ tableNumber });
+    } catch (error) {
+        throw new Error(error);
+    }
+}
+
+exports.makeOrder = async (tableNumber, order) => {
+    console.log(tableNumber, order)
 }

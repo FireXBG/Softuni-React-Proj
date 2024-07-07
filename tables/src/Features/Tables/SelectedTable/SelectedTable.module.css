@@ -1,0 +1,41 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+    padding: 2vw;
+    border: 0.1vw solid #ccc;
+    border-radius: 0.5vw;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+}
+
+.heading {
+    font-size: 4vw;
+    font-weight: 600;
+}
+
+.orders__main {
+    display: flex;
+    flex-direction: column;
+    gap: 2vw;
+}
+
+.orders__p {
+    font-size: 2vw;
+    font-weight: 600;
+}
+
+.orders__ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+}
+
+.orders__li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vw;
+    border: 0.1vw solid #ccc;
+    border-radius: 0.5vw;
+}

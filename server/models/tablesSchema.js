@@ -10,7 +10,7 @@ const tablesSchema = new Schema({
         required: true,
     },
     orders: {
-        type: Array,
+        type: Object,
         required: true,
     },
 })

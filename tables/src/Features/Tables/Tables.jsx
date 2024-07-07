@@ -1,9 +1,12 @@
 import styles from './Tables.module.css';
 import axios from 'axios';
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Tables() {
     const [tables, setTables] = useState([]);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTables = async () => {
@@ -36,6 +39,11 @@ export default function Tables() {
             console.error('Error taking table:', error);
         }
     }
+    const selectTable = async (tableNumber) => {
+
+
+        navigate(`/tables/${tableNumber}`)
+    }
 
     return (
         <>
@@ -43,10 +51,10 @@ export default function Tables() {
             <div className={styles.tables__container}>
                 {tables.map(table => (
                     <div key={table.tableNumber} className={styles.table}>
-                        <p>Table Number: {table.tableNumber}</p>
+                        <p className={styles.table__number}>{table.tableNumber}</p>
                         <p>Is Taken: {table.isTaken ? 'Yes' : 'No'}</p>
                         {table.isTaken ? (
-                            <button className={styles.button} >Select Table</button>
+                            <button className={styles.button} onClick={() => selectTable(table.tableNumber)} >Select Table</button>
                         ) : (
                             <button className={styles.button} onClick={() => takeTable(table.tableNumber)} >Take Table</button>
                         )}

@@ -5,6 +5,7 @@ import { AuthProvider } from './auth/authContext'; // Ensure this matches the fi
 import ProtectedRoute from './auth/ProtectedRoute';
 import Login from './Features/Login/Login';
 import Tables from "./Features/Tables/Tables";
+import SelectedTable from "./Features/Tables/SelectedTable/SelectedTable";
 
 // Placeholder components for protected routes
 const Dashboard = () => <h1>Dashboard Page</h1>;
@@ -22,6 +23,14 @@ function App() {
                             <ProtectedRoute>
                                 <Tables />
                             </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path='/tables/:tableNumber'
+                        element={
+                        <ProtectedRoute>
+                            <SelectedTable />
+                        </ProtectedRoute>
                         }
                     />
                     <Route
