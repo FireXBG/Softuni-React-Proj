@@ -36,7 +36,14 @@ exports.getMenu = async () => {
 
 exports.getTableByNumber = async (tableNumber) => {
     try {
-        return await tables.findOne({ tableNumber });
+        const table = await tables.findOne({ tableNumber });
+        // Replace orders with the actual order objects
+
+        const IDs = table.orders;
+        const orders = await menu.find({ _id: { $in: IDs } });
+        table.orders = orders;
+        console.log(table)
+        return table;
     } catch (error) {
         throw new Error(error);
     }

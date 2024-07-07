@@ -51,7 +51,11 @@ export default function SelectedTable() {
                 <p className={styles.orders__p}>Orders:</p>
                 <ul className={styles.orders__ul}>
                     {table.orders && table.orders.length > 0 ? table.orders.map((order, index) => {
-                        return <li key={index} className={styles.orders__li}>{order}</li>;
+                        return (
+                            <li key={index} className={styles.orders__li}>
+                                {order.name} - ${order.price}
+                            </li>
+                        );
                     }) : 'No orders yet'}
                 </ul>
             </div>
