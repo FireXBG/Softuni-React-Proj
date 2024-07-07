@@ -2,11 +2,10 @@ import styles from './AddOrder.module.css';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function AddOrder({ tableNumber }) {
+export default function AddOrder({ tableNumber, onOrderPlaced }) {
     const [menu, setMenu] = useState([]);
 
     useEffect(() => {
-        console.log('Received tableNumber:', tableNumber); // Log the tableNumber prop
         const fetchMenu = async () => {
             try {
                 const response = await fetch('http://localhost:3001/api/operations/getMenu');
@@ -29,21 +28,19 @@ export default function AddOrder({ tableNumber }) {
         const formData = new FormData(e.target);
         const checkedItems = [];
         for (let [key, value] of formData.entries()) {
-            console.log(key, value); // Log each entry for debugging
-            if (value === 'on') { // Check if the value is 'on'
+            if (value === 'on') {
                 checkedItems.push(key);
             }
         }
 
         const orders = checkedItems;
-        console.log('Orders:', orders);
 
         try {
-            const response = await axios.post('http://localhost:3001/api/operations/makeOrder', {
+            await axios.post('http://localhost:3001/api/operations/makeOrder', {
                 tableNumber,
                 orders,
             });
-            console.log(response.data);
+            onOrderPlaced();
         } catch (error) {
             console.error('Error:', error);
         }
@@ -61,7 +58,7 @@ export default function AddOrder({ tableNumber }) {
                         </li>
                     ))}
                 </ul>
-                <button type="submit">Place order</button>
+                <button className='button__1' type="submit">Place order</button>
             </form>
         </div>
     );
