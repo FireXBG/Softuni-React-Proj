@@ -6,6 +6,7 @@
     height: 96vh;
     background-color: #eaeaea;
     padding: 2vw;
+    overflow: scroll;
 }
 
 .heading {
@@ -13,4 +14,14 @@
     font-weight: bold;
     margin-bottom: 2vw;
     text-align: center;
+}
+
+.menu__li {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1vw;
+    border-bottom: 1px solid #000;
+    padding-bottom: 1vw;
 }
