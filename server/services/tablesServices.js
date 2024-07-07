@@ -43,5 +43,13 @@ exports.getTableByNumber = async (tableNumber) => {
 }
 
 exports.makeOrder = async (tableNumber, order) => {
-    console.log(tableNumber, order)
+    try {
+        const table = await tables.findOne({ tableNumber });
+        order.forEach((item) => {
+            table.orders.push(item);
+        })
+        await table.save();
+    } catch (error) {
+        throw new Error(error);
+    }
 }
