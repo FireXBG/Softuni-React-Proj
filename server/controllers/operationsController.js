@@ -57,4 +57,15 @@ router.post('/makeOrder', async (req, res) => {
     }
 })
 
+router.post('/closeTable', async (req, res) => {
+    const tableNumber = req.body.tableNumber;
+    try {
+        const result = await tablesServices.closeTable(tableNumber);
+        res.status(200).json({ message: result });
+    } catch (error) {
+        console.error(error.message)
+        res.status(400).json({ error: error.message });
+    }
+})
+
 module.exports = router;

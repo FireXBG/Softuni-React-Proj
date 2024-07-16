@@ -60,3 +60,15 @@ exports.makeOrder = async (tableNumber, order) => {
         throw new Error(error);
     }
 }
+
+exports.closeTable = async (tableNumber) => {
+    try {
+        const table = await tables.findOne({ tableNumber });
+        table.isTaken = false;
+        table.orders = [];
+        await table.save();
+        return 'Table is closed';
+    } catch (error) {
+        throw new Error(error);
+    }
+}
