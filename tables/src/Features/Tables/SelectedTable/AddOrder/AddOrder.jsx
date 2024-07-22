@@ -57,7 +57,7 @@ export default function AddOrder({ tableNumber, onOrderPlaced }) {
                     {menu.map((menuItem) => (
                         <li key={menuItem._id} className={styles.menu__li}>
                             <label htmlFor={menuItem._id}>{menuItem.name} - {menuItem.price} $</label>
-                            <input type='number' id={menuItem._id} name={`${menuItem._id}|${menuItem.name}|${menuItem.price}`} min='0' defaultValue='' />
+                            <input type='number' id={menuItem._id} name={`${menuItem._id}|${menuItem.name}|${menuItem.price}`} min='0' defaultValue='0' />
                         </li>
                     ))}
                 </ul>
