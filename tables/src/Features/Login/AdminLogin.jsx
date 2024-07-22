@@ -1,22 +1,22 @@
-import React, { useState, useContext } from 'react';
-import axios from 'axios';
-import AuthContext from '../../auth/authContext';
-import styles from './Login.module.css';
+import styles from "./Login.module.css";
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import AuthContext from "../../auth/authContext";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+export default function AdminLogin() {
+    const navigate = useNavigate();
     const { login } = useContext(AuthContext);
 
-    const navigate = useNavigate();
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3001/api/auth/login', { password });
+            const response = await axios.post('http://localhost:3001/api/admin/login', { password });
             if (response.status === 200) {
-                login(response.data.token);
+                login(response.data.token, 'admin');
             } else {
                 console.error('Login failed');
                 setError('Login failed. Please check your credentials.');
@@ -27,14 +27,14 @@ export default function Login() {
         }
     };
 
-    const handleAdminLogin = (e) => {
+    const handleLoginNav = (e) => {
         e.preventDefault();
-        navigate('/admin');
+        navigate('/login');
     };
 
     return (
         <div className={styles.login__container}>
-            <h1>Restaurant System Login</h1>
+            <h1>Restaurant Admin Login</h1>
             <form className={styles.login__form} onSubmit={handleSubmit}>
                 <input
                     type="password"
@@ -43,7 +43,7 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <button type="submit">Login</button>
-                <button onClick={handleAdminLogin}>Admin Login</button>
+                <button onClick={handleLoginNav}>User Login</button>
             </form>
             {error && <p className={styles.error}>{error}</p>}
         </div>

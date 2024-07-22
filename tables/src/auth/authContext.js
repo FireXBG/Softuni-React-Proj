@@ -6,7 +6,8 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const [isLoading, setIsLoading] = useState(true); // Add loading state
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -14,36 +15,41 @@ export const AuthProvider = ({ children }) => {
             const token = localStorage.getItem('token');
             if (token) {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+                const { role } = JSON.parse(atob(token.split('.')[1]));
                 setIsAuthenticated(true);
+                setIsAdmin(role === 'admin');
             } else {
                 setIsAuthenticated(false);
+                setIsAdmin(false);
             }
-            setIsLoading(false); // Set loading to false after check
+            setIsLoading(false);
         };
 
         checkAuth();
-        window.addEventListener('storage', checkAuth); // Listen for localStorage changes
+        window.addEventListener('storage', checkAuth);
         return () => {
             window.removeEventListener('storage', checkAuth);
         };
     }, []);
 
-    const login = (token) => {
+    const login = (token, role) => {
         localStorage.setItem('token', token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         setIsAuthenticated(true);
-        navigate('/tables');
+        setIsAdmin(role === 'admin');
+        navigate(role === 'admin' ? '/admin' : '/tables');
     };
 
     const logout = () => {
         localStorage.removeItem('token');
         delete axios.defaults.headers.common['Authorization'];
         setIsAuthenticated(false);
+        setIsAdmin(false);
         navigate('/login');
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, isAdmin, isLoading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,10 +1,12 @@
 import './App.css';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
-import { AuthProvider } from './auth/authContext'; // Ensure this matches the filename
+import { AuthProvider } from './auth/authContext';
 import ProtectedRoute from './auth/ProtectedRoute';
 import Login from './Features/Login/Login';
 import Tables from './Features/Tables/Tables';
 import SelectedTable from './Features/Tables/SelectedTable/SelectedTable';
+import AdminLogin from "./Features/Login/AdminLogin";
+import AdminView from "./Features/Admin/AdminView/AdminView";
 
 function App() {
     return (
@@ -12,6 +14,7 @@ function App() {
             <AuthProvider>
                 <Routes>
                     <Route path='/login' element={<Login />} />
+                    <Route path='/admin/login' element={<AdminLogin />} />
                     <Route path='/' element={<Navigate to='/tables' />} />
                     <Route
                         path='/tables'
@@ -26,6 +29,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <SelectedTable />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path='/admin'
+                        element={
+                            <ProtectedRoute>
+                                <AdminView />
                             </ProtectedRoute>
                         }
                     />
