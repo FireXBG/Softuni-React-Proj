@@ -1,4 +1,3 @@
-// authContext.js (Make sure the filename is exactly this)
 import React, { createContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -7,6 +6,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // Add loading state
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
             } else {
                 setIsAuthenticated(false);
             }
+            setIsLoading(false); // Set loading to false after check
         };
 
         checkAuth();
@@ -42,7 +43,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, isLoading, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

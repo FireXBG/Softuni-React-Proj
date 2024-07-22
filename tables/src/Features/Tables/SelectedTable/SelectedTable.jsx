@@ -1,11 +1,12 @@
 import { useEffect, useState, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styles from './SelectedTable.module.css';
 import AddOrder from './AddOrder/AddOrder';
 import CloseTable from './CloseTable/CloseTable';
 
 export default function SelectedTable() {
     const { tableNumber } = useParams();
+    const navigate = useNavigate();
     const [table, setTable] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -58,7 +59,7 @@ export default function SelectedTable() {
     return (
         <div className={styles.main}>
             {isTableClosed ? (
-                <CloseTable table={table} />
+                <CloseTable key={table.tableNumber} table={table} />
             ) : (
                 <>
                     <h1 className={styles.heading}>Table number: {table.tableNumber}</h1>
@@ -69,12 +70,13 @@ export default function SelectedTable() {
                         <ul className={styles.orders__ul}>
                             {table.orders && table.orders.length > 0 ? table.orders.map((order, index) => (
                                 <li key={index} className={styles.orders__li}>
-                                    {order.name} - ${order.price}
+                                    {order.name} - ${order.price} x {order.quantity} = ${(order.price * order.quantity).toFixed(2)}
                                 </li>
                             )) : 'No orders yet'}
                         </ul>
                         <button className='button__1' onClick={handleCloseTable}>Finish table</button>
                     </div>
+                    <button className='button__1' onClick={() => navigate('/tables')}>Back</button>
                 </>
             )}
         </div>

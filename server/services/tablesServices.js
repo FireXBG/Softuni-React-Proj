@@ -8,58 +8,63 @@ exports.getTables = async () => {
     } catch (error) {
         throw new Error(error);
     }
-}
+};
 
-exports.takeTable = async (tableNumber) => {
+exports.getTable = async (tableNumber) => {
     try {
         const table = await tables.findOne({ tableNumber });
-        if (table.isTaken) {
-            throw new Error('Table is already taken');
+        if (!table) {
+            throw new Error('Table not found');
         }
-        table.isTaken = true;
-        await table.save();
-        return 'Table is taken';
+        return table;
     } catch (error) {
         throw new Error(error);
     }
-}
+};
 
 exports.getMenu = async () => {
     try {
         const menuList = await menu.find();
-        console.log(menuList)
+        console.log(menuList);
         return menuList;
     } catch (error) {
         throw new Error(error);
     }
-}
+};
 
 exports.getTableByNumber = async (tableNumber) => {
     try {
         const table = await tables.findOne({ tableNumber });
         // Replace orders with the actual order objects
-
         const IDs = table.orders;
         const orders = await menu.find({ _id: { $in: IDs } });
         table.orders = orders;
-        console.log(table)
+        console.log(table);
         return table;
     } catch (error) {
         throw new Error(error);
     }
-}
+};
 
-exports.makeOrder = async (tableNumber, order) => {
+exports.makeOrder = async (tableNumber, orders) => {
     try {
         const table = await tables.findOne({ tableNumber });
-        order.forEach((item) => {
-            table.orders.push(item);
-        })
+
+        orders.forEach((newOrder) => {
+            const existingOrder = table.orders.find(order => order.name === newOrder.name);
+            if (existingOrder) {
+                existingOrder.quantity += newOrder.quantity;
+            } else {
+                table.orders.push(newOrder);
+            }
+        });
+
         await table.save();
+        return 'Order successfully added';
     } catch (error) {
         throw new Error(error);
     }
-}
+};
 
 exports.closeTable = async (tableNumber) => {
     try {
@@ -71,4 +76,15 @@ exports.closeTable = async (tableNumber) => {
     } catch (error) {
         throw new Error(error);
     }
-}
+};
+
+exports.takeTable = async (tableNumber) => {
+    try {
+        const table = await tables.findOne({ tableNumber });
+        table.isTaken = true;
+        await table.save();
+        return 'Table is now taken';
+    } catch (error) {
+        throw new Error(error);
+    }
+};

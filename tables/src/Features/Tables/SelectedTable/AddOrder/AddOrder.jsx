@@ -26,14 +26,17 @@ export default function AddOrder({ tableNumber, onOrderPlaced }) {
         e.preventDefault();
 
         const formData = new FormData(e.target);
-        const checkedItems = [];
+        const orders = [];
         for (let [key, value] of formData.entries()) {
-            if (value === 'on') {
-                checkedItems.push(key);
+            if (value !== '0') {
+                const [itemId, itemName, itemPrice] = key.split('|');
+                orders.push({
+                    name: itemName,
+                    price: parseFloat(itemPrice),
+                    quantity: parseInt(value, 10),
+                });
             }
         }
-
-        const orders = checkedItems;
 
         try {
             await axios.post('http://localhost:3001/api/operations/makeOrder', {
@@ -53,8 +56,8 @@ export default function AddOrder({ tableNumber, onOrderPlaced }) {
                 <ul>
                     {menu.map((menuItem) => (
                         <li key={menuItem._id} className={styles.menu__li}>
-                            <input type='checkbox' id={menuItem._id} name={menuItem._id} value='on' />
                             <label htmlFor={menuItem._id}>{menuItem.name} - {menuItem.price} $</label>
+                            <input type='number' id={menuItem._id} name={`${menuItem._id}|${menuItem.name}|${menuItem.price}`} min='0' defaultValue='' />
                         </li>
                     ))}
                 </ul>

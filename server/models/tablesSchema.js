@@ -1,5 +1,11 @@
 const { Schema, model } = require('mongoose');
 
+const orderSchema = new Schema({
+    name: String,
+    price: Number,
+    quantity: Number,
+});
+
 const tablesSchema = new Schema({
     tableNumber: {
         type: Number,
@@ -10,9 +16,9 @@ const tablesSchema = new Schema({
         required: true,
     },
     orders: {
-        type: Array,
+        type: [orderSchema],
         required: true,
     },
-})
+});
 
 module.exports = model('Tables', tablesSchema);

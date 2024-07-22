@@ -25,3 +25,10 @@
     border-bottom: 1px solid #000;
     padding-bottom: 1vw;
 }
+
+.menu__li input {
+    width: 10vw;
+    height: 2vw;
+    font-size: 1.5vw;
+    text-align: center;
+}

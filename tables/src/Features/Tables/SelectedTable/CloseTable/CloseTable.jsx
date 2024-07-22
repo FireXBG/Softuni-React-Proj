@@ -46,9 +46,10 @@ export default function CloseTable({ table }) {
                 y += lineHeight;
                 let total = 0;
                 table.orders.forEach((order, index) => {
-                    doc.text(`${index + 1}. ${order.name} - $${order.price.toFixed(2)}`, margin, y);
+                    const orderTotal = order.price * order.quantity;
+                    doc.text(`${index + 1}. ${order.name} - $${order.price.toFixed(2)} x ${order.quantity} = $${orderTotal.toFixed(2)}`, margin, y);
                     y += lineHeight;
-                    total += order.price;
+                    total += orderTotal;
                 });
 
                 y += lineHeight;

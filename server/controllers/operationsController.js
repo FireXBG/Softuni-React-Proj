@@ -13,14 +13,14 @@ router.get('/getTables', async (req, res) => {
 
 router.get('/getTable/:tableNumber', async (req, res) => {
     try {
-        const tableNumber = req.params.tableNumber;
-        const table = await tablesServices.getTableByNumber(tableNumber);
+        const { tableNumber } = req.params;
+        const table = await tablesServices.getTable(tableNumber);
         res.status(200).json(table);
     } catch (error) {
-        console.error('Error:', error)
+        console.error('Error:', error);
         res.status(400).json({ error: error.message });
     }
-})
+});
 
 router.get('/getMenu', async (req, res) => {
     try {
@@ -46,16 +46,15 @@ router.post('/takeTable', async (req, res) => {
 
 router.post('/makeOrder', async (req, res) => {
     try {
-        const tableNumber = req.body.tableNumber;
-        const order = req.body.orders;
-        const result = await tablesServices.makeOrder(tableNumber, order);
+        const { tableNumber, orders } = req.body;
+        const result = await tablesServices.makeOrder(tableNumber, orders);
 
         res.status(200).json({ message: result });
     } catch (error) {
-        console.error('Error:', error)
+        console.error('Error:', error);
         res.status(400).json({ error: error.message });
     }
-})
+});
 
 router.post('/closeTable', async (req, res) => {
     const tableNumber = req.body.tableNumber;

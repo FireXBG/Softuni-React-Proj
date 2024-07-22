@@ -5,6 +5,12 @@
     gap: 2vw;
 }
 
+.header button {
+    position: absolute;
+    right: 2vw;
+    top: 1.2vw;
+}
+
 .heading {
     font-size: 2vw;
     font-weight: bold;

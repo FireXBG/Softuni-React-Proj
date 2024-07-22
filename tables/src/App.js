@@ -1,14 +1,10 @@
-// App.js
 import './App.css';
 import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import { AuthProvider } from './auth/authContext'; // Ensure this matches the filename
 import ProtectedRoute from './auth/ProtectedRoute';
 import Login from './Features/Login/Login';
-import Tables from "./Features/Tables/Tables";
-import SelectedTable from "./Features/Tables/SelectedTable/SelectedTable";
-
-// Placeholder components for protected routes
-const Dashboard = () => <h1>Dashboard Page</h1>;
+import Tables from './Features/Tables/Tables';
+import SelectedTable from './Features/Tables/SelectedTable/SelectedTable';
 
 function App() {
     return (
@@ -28,16 +24,8 @@ function App() {
                     <Route
                         path='/tables/:tableNumber'
                         element={
-                        <ProtectedRoute>
-                            <SelectedTable />
-                        </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path='/example'
-                        element={
                             <ProtectedRoute>
-                                <Dashboard />
+                                <SelectedTable />
                             </ProtectedRoute>
                         }
                     />
