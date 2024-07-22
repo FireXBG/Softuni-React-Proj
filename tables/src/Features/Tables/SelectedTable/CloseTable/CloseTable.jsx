@@ -1,13 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 
 export default function CloseTable({ table }) {
     const [countdown, setCountdown] = useState(5);
+    const receiptGenerated = useRef(false);
     const navigate = useNavigate();
 
     useEffect(() => {
         const generateReceipt = async () => {
+            if (receiptGenerated.current) {
+                console.log('Receipt already generated');
+                return;
+            }
+
             try {
                 const doc = new jsPDF();
                 const pageWidth = doc.internal.pageSize.getWidth();
@@ -53,7 +59,8 @@ export default function CloseTable({ table }) {
                 doc.setFontSize(10);
                 doc.text('Thank you for dining with us!', pageWidth / 2, y, { align: 'center' });
 
-                doc.save(`table-${table.tableNumber}-bill.pdf`);
+                const pdfUrl = doc.output('bloburl');
+                window.open(pdfUrl, '_blank');
 
                 const response = await fetch('http://localhost:3001/api/operations/closeTable', {
                     method: 'POST',
@@ -65,29 +72,34 @@ export default function CloseTable({ table }) {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
+
+                receiptGenerated.current = true; // Set flag to true after generating receipt
+                console.log('Receipt generated');
             } catch (error) {
-                alert(error);
+                console.log(error);
             }
         };
 
-        generateReceipt();
-    }, [table]);
-
-    useEffect(() => {
         if (countdown === 0) {
-            navigate('/tables');
+            generateReceipt().then(() => {
+                navigate('/tables');
+            });
         } else {
             const timer = setTimeout(() => {
                 setCountdown(countdown - 1);
             }, 1000);
             return () => clearTimeout(timer);
         }
-    }, [countdown, navigate]);
+
+        return () => {
+            console.log('CloseTable component unmounted');
+        };
+    }, [countdown, navigate, table]);
 
     return (
         <div>
             <p>Table {table.tableNumber} has been closed. Receipt has been generated.</p>
-            <p>Redirecting to tables in {countdown} seconds...</p>
+            <p>Returning to tables menu in {countdown} seconds...</p>
         </div>
     );
 }

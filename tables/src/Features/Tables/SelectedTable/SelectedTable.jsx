@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './SelectedTable.module.css';
 import AddOrder from './AddOrder/AddOrder';
@@ -12,24 +12,26 @@ export default function SelectedTable() {
     const [isOpenAddOrder, setIsOpenAddOrder] = useState(false);
     const [isTableClosed, setIsTableClosed] = useState(false);
 
-    const fetchTable = async () => {
+    const fetchTable = useCallback(async () => {
         try {
+            setLoading(true);
             const response = await fetch(`http://localhost:3001/api/operations/getTable/${tableNumber}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-            const table = await response.json();
-            setTable(table);
+            const tableData = await response.json();
+            setTable(tableData);
         } catch (error) {
             setError(error.message);
         } finally {
             setLoading(false);
         }
-    };
+    }, [tableNumber]);
 
     useEffect(() => {
         fetchTable();
-    }, [tableNumber]);
+        console.log('SelectedTable component mounted or updated');
+    }, [fetchTable]);
 
     const handleOrder = () => {
         setIsOpenAddOrder(!isOpenAddOrder);
@@ -41,6 +43,11 @@ export default function SelectedTable() {
     };
 
     const handleCloseTable = () => {
+        if (isTableClosed) {
+            console.log('Table already closed');
+            return;
+        }
+        console.log('Closing table');
         setIsTableClosed(true);
     };
 
@@ -60,13 +67,11 @@ export default function SelectedTable() {
                     <div className={styles.orders__main}>
                         <p className={styles.orders__p}>Orders:</p>
                         <ul className={styles.orders__ul}>
-                            {table.orders && table.orders.length > 0 ? table.orders.map((order, index) => {
-                                return (
-                                    <li key={index} className={styles.orders__li}>
-                                        {order.name} - ${order.price}
-                                    </li>
-                                );
-                            }) : 'No orders yet'}
+                            {table.orders && table.orders.length > 0 ? table.orders.map((order, index) => (
+                                <li key={index} className={styles.orders__li}>
+                                    {order.name} - ${order.price}
+                                </li>
+                            )) : 'No orders yet'}
                         </ul>
                         <button className='button__1' onClick={handleCloseTable}>Finish table</button>
                     </div>
