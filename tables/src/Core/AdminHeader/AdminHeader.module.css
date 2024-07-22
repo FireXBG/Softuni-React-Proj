@@ -1,0 +1,14 @@
+.title {
+    font-size: 2vw;
+    font-weight: 700;
+    text-align: center;
+}
+
+.ul {
+    list-style-type: none;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    gap: 2vw;
+    margin-top: 2vw;
+}
