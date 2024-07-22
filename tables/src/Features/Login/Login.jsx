@@ -29,7 +29,7 @@ export default function Login() {
 
     const handleAdminLogin = (e) => {
         e.preventDefault();
-        navigate('/admin');
+        navigate('/admin/login');
     };
 
     return (

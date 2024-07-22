@@ -40,6 +40,30 @@ function App() {
                             </ProtectedRoute>
                         }
                     />
+                    <Route
+                        path='/admin/tables'
+                        element={
+                        <ProtectedRoute>
+                            <AdminView view='tables'></AdminView>
+                        </ProtectedRoute>
+                    }
+                    />
+                    <Route
+                        path='/admin/menus'
+                        element={
+                            <ProtectedRoute>
+                                <AdminView view='menu'></AdminView>
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path='/admin/security'
+                        element={
+                            <ProtectedRoute>
+                                <AdminView view='security'></AdminView>
+                            </ProtectedRoute>
+                        }
+                    />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>
