@@ -1,0 +1,5 @@
+.action__buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 2vw;
+}

@@ -34,4 +34,15 @@ router.post('/addTable', async (req, res) => {
     }
 })
 
+router.post('/updateMenu', async (req, res) => {
+    const { menu } = req.body;
+    try {
+        const result = await adminServices.updateMenu({ menu });
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error updating menu:', error);
+        res.status(400).json({ message: error.message });
+    }
+})
+
 module.exports = router;
