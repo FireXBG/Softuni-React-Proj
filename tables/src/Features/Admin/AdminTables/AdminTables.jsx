@@ -1,21 +1,22 @@
 import styles from './AdminTables.module.css';
 import { useEffect, useState } from 'react';
 import axios from "axios";
+import AddTable from "./AddTable/AddTable";
 
 export default function AdminTables() {
-
     const [tables, setTables] = useState([]);
+    const [showAddTableModal, setShowAddTableModal] = useState(false);
+
+    const fetchTables = async () => {
+        try {
+            const response = await axios.get('http://localhost:3001/api/operations/getTables');
+            setTables(response.data);
+        } catch (error) {
+            console.error('Error fetching tables:', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchTables = async () => {
-            try {
-                const response = await axios.get('http://localhost:3001/api/operations/getTables');
-                setTables(response.data);
-            } catch (error) {
-                console.error('Error fetching tables:', error);
-            }
-        };
-
         fetchTables();
     }, []);
 
@@ -27,9 +28,9 @@ export default function AdminTables() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ tableNumber })
-            })
+            });
 
-            if(!response.ok) {
+            if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
@@ -54,9 +55,9 @@ export default function AdminTables() {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ tableNumber })
-            })
+            });
 
-            if(!response.ok) {
+            if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
 
@@ -67,19 +68,36 @@ export default function AdminTables() {
         }
     }
 
-    const openAddTableModal = async () => {}
+    const openAddTableModal = () => {
+        setShowAddTableModal(true);
+    }
+
+    const closeAddTableModal = () => {
+        setShowAddTableModal(false);
+    }
 
     return (
         <div className={styles.container}>
+            {showAddTableModal && (
+                <>
+                    <div className={styles.dimmingBackground} onClick={closeAddTableModal}></div>
+                    <div className={styles.addTableContainer}>
+                        <AddTable
+                            closeAddTableModal={closeAddTableModal}
+                            fetchTables={fetchTables}
+                        />
+                    </div>
+                </>
+            )}
             <h2 className={styles.mainHeading}>Manage Tables</h2>
-            <button className='button__1'>Add Table</button>
+            <button className='button__1' onClick={openAddTableModal}>Add Table</button>
             <div className={styles.tables__container}>
                 {tables.map(table => (
                     <div key={table.tableNumber} className={styles.table}>
                         <p className={styles.table__number}>{table.tableNumber}</p>
                         <p>Is Taken: {table.isTaken ? 'Yes' : 'No'}</p>
-                        <button className='button__1' onClick={() => {resetTable(table.tableNumber)}}>Reset Table</button>
-                        <button className='button__1' onClick={() => {deleteTable(table.tableNumber)}}>Delete Table</button>
+                        <button className='button__1' onClick={() => resetTable(table.tableNumber)}>Reset Table</button>
+                        <button className='button__1' onClick={() => deleteTable(table.tableNumber)}>Delete Table</button>
                     </div>
                 ))}
             </div>

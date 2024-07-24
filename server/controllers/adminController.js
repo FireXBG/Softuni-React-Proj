@@ -23,4 +23,15 @@ router.post('/deleteTable', async (req, res) => {
     }
 })
 
+router.post('/addTable', async (req, res) => {
+    const { tableNumber } = req.body;
+    try {
+        const result = await adminServices.addTable({ tableNumber });
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error adding table:', error);
+        res.status(400).json({ message: error.message });
+    }
+})
+
 module.exports = router;

@@ -32,3 +32,19 @@ exports.deleteTable = async (data) => {
         throw new Error(error);
     }
 };
+
+exports.addTable = async (data) => {
+    const tableNumber = data.tableNumber;
+
+    try {
+        const existingTable = await table.find({ tableNumber });
+        if(existingTable.length > 0) {
+            throw new Error('Table already exists');
+        }
+
+        const newTable = new table({ tableNumber, isTaken: false });
+        await newTable.save();
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
