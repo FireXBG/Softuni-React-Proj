@@ -4,7 +4,6 @@ import axios from "axios";
 
 export default function AdminMenu() {
     const [menu, setMenu] = useState([]);
-    const [newMenu, setNewMenu] = useState([]);
 
     useEffect(() => {
         const fetchMenu = async () => {
@@ -25,7 +24,7 @@ export default function AdminMenu() {
     }, []);
 
     const handleChanges = (e) => {
-        const [itemId, itemName, itemPrice] = e.target.name.split('|');
+        const [itemId, itemName] = e.target.name.split('|');
         const newPrice = parseFloat(e.target.value);
         const newMenuItem = {
             _id: itemId,
@@ -66,12 +65,12 @@ export default function AdminMenu() {
 
     return (
         <div className={styles.container}>
-            <h1>Manage Menu</h1>
+            <h1 className={styles.mainHeading}>Manage Menu</h1>
             <form onSubmit={handleSubmit}>
                 <ul>
                     {menu.map((menuItem) => (
                         <li key={menuItem._id} className={styles.menu__li}>
-                            <label htmlFor={menuItem._id}>{menuItem.name} - </label>
+                            <label htmlFor={menuItem._id}>{menuItem.name}:</label>
                             <input onChange={handleChanges} type='number' id={menuItem._id} name={`${menuItem._id}|${menuItem.name}|${menuItem.price}`} min='0' value={menuItem.price} />
                         </li>
                     ))}
