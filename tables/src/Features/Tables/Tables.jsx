@@ -7,7 +7,7 @@ import AuthContext from '../../auth/authContext'; // Import AuthContext
 export default function Tables() {
     const [tables, setTables] = useState([]);
     const navigate = useNavigate();
-    const { logout } = useContext(AuthContext); // Destructure logout from AuthContext
+    const { logout } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchTables = async () => {
@@ -27,7 +27,6 @@ export default function Tables() {
             const response = await axios.post('http://localhost:3001/api/operations/takeTable', { tableNumber });
             console.log(response.data);
 
-            // Update the tables state
             const updatedTables = tables.map(table => {
                 if (table.tableNumber === tableNumber) {
                     table.isTaken = true;

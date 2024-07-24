@@ -1,6 +1,8 @@
 const adminUser = require('../models/adminUserSchema');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const table = require('../models/tablesSchema');
+
 exports.authorizeAdmin = async (data) => {
     const pass = data.password;
 
@@ -17,5 +19,16 @@ exports.authorizeAdmin = async (data) => {
 
     } catch (error) {
         throw new Error('Admin authorization failed');
+    }
+};
+
+exports.deleteTable = async (data) => {
+    const tableNumber = data.tableNumber;
+
+    try {
+        await table.deleteOne({ tableNumber });
+        return 'Table deleted successfully';
+    } catch (error) {
+        throw new Error(error);
     }
 };
