@@ -15,7 +15,7 @@ exports.authorizeAdmin = async (data) => {
             throw new Error('Admin authorization failed');
         }
 
-        const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return token;
 
     } catch (error) {

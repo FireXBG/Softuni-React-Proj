@@ -18,7 +18,7 @@ exports.authorize = async (pass) => {
             throw new Error('Invalid password');
         }
 
-        const token = jwt.sign({ id: userInDb._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ role: 'user' }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return token;
     } catch (error) {
         console.error(error);
@@ -56,3 +56,16 @@ exports.changePassword = async (data) => {
         throw new Error('Password change failed');
     }
 }
+
+exports.verifyToken = async (token) => {
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        if (decoded.exp * 1000 < Date.now()) {
+            throw new Error('Token expired');
+        }
+        return { role: decoded.role, isValid: true };
+    } catch (error) {
+        return { role: null, isValid: false };
+    }
+}
+

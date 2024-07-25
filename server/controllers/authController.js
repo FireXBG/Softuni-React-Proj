@@ -40,4 +40,19 @@ router.post('/admin', isAuthorized, async (req, res) => {
     }
 })
 
+router.post('/verify-token', async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    try {
+        const { role, isValid } = await authServices.verifyToken(token);
+        if (!isValid) {
+            throw new Error('Invalid token');
+        }
+        res.json({ role });
+    } catch (error) {
+        console.error(error);
+        res.status(401).json({ message: 'Token verification failed' });
+    }
+});
+
+
 module.exports = router;

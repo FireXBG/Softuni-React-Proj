@@ -1,7 +1,7 @@
-import styles from "./Login.module.css";
-import React, { useState, useContext } from "react";
-import axios from "axios";
-import AuthContext from "../../auth/authContext";
+import React, { useState, useContext } from 'react';
+import axios from 'axios';
+import AuthContext from '../../auth/authContext';
+import styles from './Login.module.css';
 import { useNavigate } from "react-router-dom";
 
 export default function AdminLogin() {
@@ -16,7 +16,7 @@ export default function AdminLogin() {
         try {
             const response = await axios.post('http://localhost:3001/api/admin/login', { password });
             if (response.status === 200) {
-                login(response.data.token, 'admin');
+                login(response.data.token);
             } else {
                 console.error('Login failed');
                 setError('Login failed. Please check your credentials.');

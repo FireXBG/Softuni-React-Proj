@@ -7,6 +7,7 @@ import Tables from './Features/Tables/Tables';
 import SelectedTable from './Features/Tables/SelectedTable/SelectedTable';
 import AdminLogin from "./Features/Login/AdminLogin";
 import AdminView from "./Features/Admin/AdminView/AdminView";
+import NotAuthorized from './auth/notAuthorized';
 
 function App() {
     return (
@@ -16,10 +17,11 @@ function App() {
                     <Route path='/login' element={<Login />} />
                     <Route path='/admin/login' element={<AdminLogin />} />
                     <Route path='/' element={<Navigate to='/tables' />} />
+                    <Route path='/not-authorized' element={<NotAuthorized />} />
                     <Route
                         path='/tables'
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute requiredRoles={['user', 'admin']}>
                                 <Tables />
                             </ProtectedRoute>
                         }
@@ -27,7 +29,7 @@ function App() {
                     <Route
                         path='/tables/:tableNumber'
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute requiredRoles={['user', 'admin']}>
                                 <SelectedTable />
                             </ProtectedRoute>
                         }
@@ -35,7 +37,7 @@ function App() {
                     <Route
                         path='/admin'
                         element={
-                            <ProtectedRoute>
+                            <ProtectedRoute requiredRoles={['admin']}>
                                 <AdminView />
                             </ProtectedRoute>
                         }
@@ -43,24 +45,24 @@ function App() {
                     <Route
                         path='/admin/tables'
                         element={
-                        <ProtectedRoute>
-                            <AdminView view='tables'></AdminView>
-                        </ProtectedRoute>
-                    }
+                            <ProtectedRoute requiredRoles={['admin']}>
+                                <AdminView view='tables' />
+                            </ProtectedRoute>
+                        }
                     />
                     <Route
                         path='/admin/menus'
                         element={
-                            <ProtectedRoute>
-                                <AdminView view='menu'></AdminView>
+                            <ProtectedRoute requiredRoles={['admin']}>
+                                <AdminView view='menu' />
                             </ProtectedRoute>
                         }
                     />
                     <Route
                         path='/admin/security'
                         element={
-                            <ProtectedRoute>
-                                <AdminView view='security'></AdminView>
+                            <ProtectedRoute requiredRoles={['admin']}>
+                                <AdminView view='security' />
                             </ProtectedRoute>
                         }
                     />
