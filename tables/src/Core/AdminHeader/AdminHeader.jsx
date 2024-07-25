@@ -6,9 +6,11 @@ export default function AdminHeader() {
         <header>
             <h1 className={styles.title}>Admin Panel</h1>
             <ul className={styles.ul}>
-                <li><Link to='/admin/tables' className='button__1' >Tables</Link></li>
-                <li><Link to='/admin/menus' className='button__1' >Menu</Link></li>
-                <li><Link to='/admin/security' className='button__1' >Security</Link></li>
+                <li><Link to='/admin/tables' className='button__1'>Tables</Link></li>
+                <li><Link to='/admin/menus' className='button__1'>Menu</Link></li>
+                <li><Link to='/admin/security' className='button__1'>Security</Link></li>
+                <li><Link to='/admin/stats' className='button__1'>Stats</Link></li>
+                <li><Link to='/tables' className='button__1'>Exit</Link></li>
             </ul>
         </header>
     )

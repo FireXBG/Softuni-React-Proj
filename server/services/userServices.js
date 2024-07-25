@@ -47,3 +47,13 @@ exports.verifyToken = async (token) => {
         return { role: null, isValid: false };
     }
 }
+
+exports.changePassword = async (userId, newPassword) => {
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        await User.updateOne({ _id: userId }, { password: hashedPassword });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Server error');
+    }
+}

@@ -41,4 +41,26 @@ router.post('/verify-token', async (req, res) => {
     }
 });
 
+router.get('/getUsers', async (req, res) => {
+    try {
+        const users = await authServices.getAllUsers();
+        res.json(users);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+})
+
+
+router.post('/changePassword', async (req, res) => {
+    try {
+        const userId = req.body.userId;
+        const newPassword = req.body.newPassword;
+        await authServices.changePassword(userId, newPassword);
+        res.status(200).json({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+})
 module.exports = router;
