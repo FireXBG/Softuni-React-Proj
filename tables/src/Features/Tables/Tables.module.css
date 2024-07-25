@@ -1,14 +1,22 @@
 .tables__container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-    padding: 2vw;
+    padding: 5vw 2vw;
     gap: 2vw;
 }
 
-.header button {
+.header button:first-child {
     position: absolute;
     right: 2vw;
     top: 1.2vw;
+    min-width: 4vw;
+}
+
+.header button:nth-child(2) {
+    position: absolute;
+    right: 2vw;
+    top: 4vw;
+    min-width: 4vw;
 }
 
 .heading {

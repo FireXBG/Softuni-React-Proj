@@ -7,7 +7,7 @@ import AuthContext from '../../auth/authContext'; // Import AuthContext
 export default function Tables() {
     const [tables, setTables] = useState([]);
     const navigate = useNavigate();
-    const { logout } = useContext(AuthContext);
+    const { logout, role } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchTables = async () => {
@@ -44,10 +44,17 @@ export default function Tables() {
         navigate(`/tables/${tableNumber}`);
     };
 
+    const handleAdminClick = () => {
+        navigate('/admin');
+    };
+
     return (
         <>
             <div className={styles.header}>
                 <button className='button__1' onClick={logout}>Logout</button>
+                {role === 'admin' && (
+                    <button className='button__1' onClick={handleAdminClick}>Admin</button>
+                )}
                 <h1 className={styles.heading}>Select a table</h1>
             </div>
             <div className={styles.tables__container}>
