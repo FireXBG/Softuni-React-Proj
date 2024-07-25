@@ -1,20 +1,36 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import AuthContext from '../../auth/authContext';
 import styles from './Login.module.css';
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+    const [users, setUsers] = useState([]);
+    const [selectedUser, setSelectedUser] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { login } = useContext(AuthContext);
-
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/auth/users');
+                setUsers(response.data);
+                setSelectedUser(response.data[0]?.username || '');
+                console.log(response.data);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+
+        fetchUsers();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3001/api/auth/login', { password });
+            const response = await axios.post('http://localhost:3001/api/auth/login', { username: selectedUser, password });
             if (response.status === 200) {
                 login(response.data.token);
             } else {
@@ -27,15 +43,21 @@ export default function Login() {
         }
     };
 
-    const handleAdminLogin = (e) => {
-        e.preventDefault();
-        navigate('/admin/login');
-    };
-
     return (
         <div className={styles.login__container}>
             <h1>Restaurant System Login</h1>
             <form className={styles.login__form} onSubmit={handleSubmit}>
+                <select
+                    value={selectedUser}
+                    onChange={(e) => setSelectedUser(e.target.value)}
+                    className={styles.user__options}
+                >
+                    {users.map((user) => (
+                        <option key={user._id} value={user.username}>
+                            {user.username}
+                        </option>
+                    ))}
+                </select>
                 <input
                     type="password"
                     placeholder="Password"
@@ -43,7 +65,6 @@ export default function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <button type="submit">Login</button>
-                <button onClick={handleAdminLogin}>Admin Login</button>
             </form>
             {error && <p className={styles.error}>{error}</p>}
         </div>

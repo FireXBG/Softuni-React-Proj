@@ -5,7 +5,6 @@ import ProtectedRoute from './auth/ProtectedRoute';
 import Login from './Features/Login/Login';
 import Tables from './Features/Tables/Tables';
 import SelectedTable from './Features/Tables/SelectedTable/SelectedTable';
-import AdminLogin from "./Features/Login/AdminLogin";
 import AdminView from "./Features/Admin/AdminView/AdminView";
 import NotAuthorized from './auth/notAuthorized';
 
@@ -15,7 +14,6 @@ function App() {
             <AuthProvider>
                 <Routes>
                     <Route path='/login' element={<Login />} />
-                    <Route path='/admin/login' element={<AdminLogin />} />
                     <Route path='/' element={<Navigate to='/tables' />} />
                     <Route path='/not-authorized' element={<NotAuthorized />} />
                     <Route

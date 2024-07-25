@@ -4,56 +4,35 @@ const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 dotenv.config();
 
-exports.authorize = async (pass) => {
+exports.authorize = async (username, password) => {
     try {
-        const userInDb = await User.findOne();
+        const userInDb = await User.findOne({ username });
 
         if (!userInDb) {
-            throw new Error('User not found');
+            throw new Error('User not found! Contact your administrator!');
         }
 
-        const isMatch = await bcrypt.compare(pass, userInDb.password);
+        const isMatch = await bcrypt.compare(password, userInDb.password);
 
         if (!isMatch) {
-            throw new Error('Invalid password');
+            throw new Error('Incorrect password');
         }
 
-        const token = jwt.sign({ role: 'user' }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ username, role: userInDb.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
         return token;
     } catch (error) {
         console.error(error);
-        throw new Error('Authorization failed');
+        throw new Error('Incorrect password');
     }
 };
 
-exports.changePassword = async (data) => {
+exports.getAllUsers = async () => {
     try {
-        const oldPass = data.oldPassword;
-        const newPass = data.newPassword;
-
-
-        const userInDb = await User.findOne();
-
-        if (!userInDb) {
-            throw new Error('User not found');
-        }
-
-        const isMatch = await bcrypt.compare(oldPass, userInDb.password);
-
-        if (!isMatch) {
-            throw new Error('Invalid password');
-        }
-
-        const salt = await bcrypt.genSalt(12);
-
-        const hashedPass = await bcrypt.hash(newPass, salt);
-
-        userInDb.password = hashedPass;
-
-        await userInDb.save();
+        const users = await User.find();
+        return users;
     } catch (error) {
         console.error(error);
-        throw new Error('Password change failed');
+        throw new Error('Server error');
     }
 }
 
@@ -68,4 +47,3 @@ exports.verifyToken = async (token) => {
         return { role: null, isValid: false };
     }
 }
-

@@ -20,6 +20,7 @@
 .login__form input {
     width: 20vw;
     padding: 0.5vw;
+    height: 2.5vw;
     margin-bottom: 1vw;
     border: 0.1vw solid #ccc;
     border-radius: 0.5vw;
@@ -38,4 +39,11 @@
 
 .login__form button:hover {
     background-color: #e5e5e5;
+}
+
+.user__options {
+    height: 2.5vw;
+    width: 100%;
+    border: 0.1vw solid #ccc;
+    border-radius: 0.5vw;
 }
