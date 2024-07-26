@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
             const { role } = response.data;
             setIsAuthenticated(true);
             setRole(role);
-            navigate('/tables'); // Redirect to tables regardless of role
+            navigate('/tables');
         } catch (error) {
             console.error('Login failed', error);
             localStorage.removeItem('token');

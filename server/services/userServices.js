@@ -57,3 +57,24 @@ exports.changePassword = async (userId, newPassword) => {
         throw new Error('Server error');
     }
 }
+
+exports.createUser = async (username, password, role) => {
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ username, password: hashedPassword, role });
+
+        await newUser.save();
+    } catch (error) {
+        console.error(error);
+        throw new Error('Server error');
+    }
+}
+
+exports.deleteUser = async (userId) => {
+    try {
+        await User.deleteOne({ _id: userId });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Server error');
+    }
+}

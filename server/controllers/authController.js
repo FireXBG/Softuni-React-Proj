@@ -51,7 +51,6 @@ router.get('/getUsers', async (req, res) => {
     }
 })
 
-
 router.post('/changePassword', async (req, res) => {
     try {
         const userId = req.body.userId;
@@ -63,4 +62,28 @@ router.post('/changePassword', async (req, res) => {
         res.status(500).json({ message: 'Server error' });
     }
 })
+
+router.post('/createUser', async (req, res) => {
+    try {
+        const username = req.body.username;
+        const password = req.body.password;
+        const role = req.body.role;
+        await authServices.createUser(username, password, role);
+        res.status(200).json({ message: 'User created successfully' });
+    } catch(error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+})
+
+router.delete('/deleteUser/:id', async (req, res) => {
+    try {
+        await authServices.deleteUser(req.params.id);
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+})
+
 module.exports = router;
