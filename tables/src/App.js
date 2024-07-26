@@ -64,6 +64,22 @@ function App() {
                             </ProtectedRoute>
                         }
                     />
+                    <Route
+                        path='/admin/info'
+                        element={
+                            <ProtectedRoute requiredRoles={['admin']}>
+                                <AdminView view='info' />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path='/admin/stats'
+                        element={
+                            <ProtectedRoute requiredRoles={['admin']}>
+                                <AdminView view='stats' />
+                            </ProtectedRoute>
+                        }
+                    />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>

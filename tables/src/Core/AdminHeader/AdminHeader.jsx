@@ -1,5 +1,5 @@
 import styles from './AdminHeader.module.css';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function AdminHeader() {
     return (
@@ -10,6 +10,7 @@ export default function AdminHeader() {
                 <li><Link to='/admin/menus' className='button__1'>Menu</Link></li>
                 <li><Link to='/admin/security' className='button__1'>Security</Link></li>
                 <li><Link to='/admin/stats' className='button__1'>Stats</Link></li>
+                <li><Link to='/admin/info' className='button__1'>Info</Link></li>
                 <li><Link to='/tables' className='button__1'>Exit</Link></li>
             </ul>
         </header>
