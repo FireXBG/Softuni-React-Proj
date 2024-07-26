@@ -58,7 +58,7 @@ export default function AdminInfo() {
     return (
         <div className={styles.container}>
             <h1 className={styles.mainHeading}>Admin Info</h1>
-            <form onSubmit={handleSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit}>
                 <label>
                     Restaurant name:
                     <input
