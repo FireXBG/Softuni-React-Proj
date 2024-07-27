@@ -4,6 +4,7 @@ import axios from 'axios';
 import styles from './SelectedTable.module.css';
 import AddOrder from './AddOrder/AddOrder';
 import CloseTable from './CloseTable/CloseTable';
+import SuccessOperation from '../../../Core/SuccessOperation/SuccessOperation';
 
 export default function SelectedTable() {
     const {tableNumber} = useParams();
@@ -13,6 +14,7 @@ export default function SelectedTable() {
     const [error, setError] = useState(null);
     const [isOpenAddOrder, setIsOpenAddOrder] = useState(false);
     const [isTableClosed, setIsTableClosed] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const fetchTable = useCallback(async () => {
         try {
@@ -59,6 +61,8 @@ export default function SelectedTable() {
             if (response.status === 200) {
                 console.log('Order deleted');
                 fetchTable();
+                setShowSuccess(true);
+                setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
             }
         } catch (error) {
             console.error('Error:', error);
@@ -71,6 +75,7 @@ export default function SelectedTable() {
 
     return (
         <div className={styles.main}>
+            {showSuccess && <SuccessOperation/>}
             {isTableClosed ? (
                 <CloseTable key={table.tableNumber} table={table}/>
             ) : (
@@ -85,7 +90,7 @@ export default function SelectedTable() {
                                 <li key={index} className={styles.orders__li}>
                                     {order.name} - ${order.price} x {order.quantity} =
                                     ${(order.price * order.quantity).toFixed(2)}
-                                    <button className='button__2' onClick={() => handleDeleteOrder(order._id)}>Delete
+                                    <button className='button__1' onClick={() => handleDeleteOrder(order._id)}>Delete
                                     </button>
                                 </li>
                             )) : 'No orders yet'}
