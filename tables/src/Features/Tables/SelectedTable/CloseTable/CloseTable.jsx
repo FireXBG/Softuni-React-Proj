@@ -56,7 +56,7 @@ export default function CloseTable({table}) {
                 y += lineHeight;
                 doc.text(restaurantInfo.addressLine2, pageWidth / 2, y, {align: 'center'});
                 y += lineHeight;
-                doc.text(restaurantInfo.phoneNo, pageWidth / 2, y, {align: 'center'});
+                doc.text('+' + restaurantInfo.phoneNo, pageWidth / 2, y, {align: 'center'});
                 y += lineHeight * 2;
 
                 doc.setFontSize(12);

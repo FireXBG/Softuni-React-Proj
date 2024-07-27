@@ -1,6 +1,7 @@
 .action__buttons {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     gap: 2vw;
 }
 
@@ -8,6 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
     margin-top: 2.5vh;
     gap: 2vw;
 }
@@ -30,9 +32,13 @@
     width: 30vw;
 }
 
+.menu__li label {
+    width: 15%;
+}
+
 .menu__li input {
     height: 2.5vw;
-    width: 5vw;
+    width: 10vw;
     text-align: center;
     font-size: 1.8vw;
 }

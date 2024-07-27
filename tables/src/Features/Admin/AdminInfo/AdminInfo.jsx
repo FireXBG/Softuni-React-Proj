@@ -1,13 +1,15 @@
 import styles from './AdminInfo.module.css';
 import {useState, useEffect} from 'react';
 import axios from "axios";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 
 export default function AdminInfo() {
     const [info, setInfo] = useState({
         name: '',
         addressLine1: '',
         addressLine2: '',
-        phoneNo: ''
+        phoneNo: '',
     });
 
     useEffect(() => {
@@ -35,6 +37,13 @@ export default function AdminInfo() {
         setInfo({
             ...info,
             [name]: value
+        });
+    };
+
+    const handlePhoneChange = (value) => {
+        setInfo({
+            ...info,
+            phoneNo: value
         });
     };
 
@@ -66,6 +75,7 @@ export default function AdminInfo() {
                         name="name"
                         value={info.name}
                         onChange={handleChange}
+                        className={styles.input}
                     />
                 </label>
                 <label>
@@ -75,6 +85,7 @@ export default function AdminInfo() {
                         name="addressLine1"
                         value={info.addressLine1}
                         onChange={handleChange}
+                        className={styles.input}
                     />
                 </label>
                 <label>
@@ -84,18 +95,19 @@ export default function AdminInfo() {
                         name="addressLine2"
                         value={info.addressLine2}
                         onChange={handleChange}
+                        className={styles.input}
                     />
                 </label>
                 <label>
                     Phone number:
-                    <input
-                        type="text"
-                        name="phoneNo"
+                    <PhoneInput
+                        country={'us'}
                         value={info.phoneNo}
-                        onChange={handleChange}
+                        onChange={handlePhoneChange}
+                        inputClass={styles.phoneInput}
                     />
                 </label>
-                <button type="submit">Save changes</button>
+                <button type="submit" className='button__1'>Save changes</button>
             </form>
         </div>
     );

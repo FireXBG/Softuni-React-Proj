@@ -1,5 +1,5 @@
 import styles from './AdminSecurity.module.css';
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import axios from 'axios';
 import ChangePassModal from './ChangePassModal/ChangePassModal';
 import AdminUserModal from './AuthUserModal/AuthUserModal';
@@ -54,15 +54,16 @@ export default function AdminSecurity(props) {
     return (
         <div className={styles.container}>
             <h1 className={styles.mainHeading}>Admin Security</h1>
-            <div>
-                <p>Users:</p>
+            <div className={styles.mainContainer}>
                 <button onClick={handleAuthorizeUser} className='button__1'>Authorize a user</button>
-                <ul>
+                <ul className={styles.ul}>
                     {users.map(user => (
                         <li key={user._id}>
-                            {user.username}
-                            <button className='button__1' onClick={() => handleEdit(user)}>Edit</button>
-                            <button className='button__1' onClick={() => handleDelete(user._id)}>Delete</button>
+                            <p>{user.username}</p>
+                            <div>
+                                <button className='button__1' onClick={() => handleEdit(user)}>Edit</button>
+                                <button className='button__1' onClick={() => handleDelete(user._id)}>Delete</button>
+                            </div>
                         </li>
                     ))}
                 </ul>

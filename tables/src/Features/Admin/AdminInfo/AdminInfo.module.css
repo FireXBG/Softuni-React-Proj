@@ -25,5 +25,23 @@
 .form label {
     display: flex;
     flex-direction: column;
-    width: 100% npm;
+    width: 100%;
+}
+
+.input {
+    width: 100%;
+    padding: 0.5vw;
+    font-size: 1.5vw;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.phoneInput {
+    width: 100% !important;
+    height: 3vw !important;
+    padding: 0.5vw;
+    font-size: 1.5vw;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
