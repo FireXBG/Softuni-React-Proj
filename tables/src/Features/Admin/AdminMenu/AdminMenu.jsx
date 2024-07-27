@@ -1,9 +1,11 @@
 import styles from './AdminMenu.module.css';
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import axios from "axios";
+import AddItemModal from './AddItemModal/AddItemModal';
 
 export default function AdminMenu() {
     const [menu, setMenu] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchMenu = async () => {
@@ -63,6 +65,16 @@ export default function AdminMenu() {
         }
     }
 
+    const handleAddItem = async (newItem) => {
+        const response = await axios.post('http://localhost:3001/api/admin/addMenuItem', newItem);
+        if (response.status !== 200) {
+            throw new Error('Network response was not ok');
+        }
+
+        const addedItem = response.data;
+        setMenu([...menu, addedItem]);
+    }
+
     return (
         <div className={styles.container}>
             <h1 className={styles.mainHeading}>Manage Menu</h1>
@@ -71,15 +83,20 @@ export default function AdminMenu() {
                     {menu.map((menuItem) => (
                         <li key={menuItem._id} className={styles.menu__li}>
                             <label htmlFor={menuItem._id}>{menuItem.name}:</label>
-                            <input onChange={handleChanges} type='number' id={menuItem._id} name={`${menuItem._id}|${menuItem.name}|${menuItem.price}`} min='0' value={menuItem.price} />
+                            <input onChange={handleChanges} type='number' id={menuItem._id}
+                                   name={`${menuItem._id}|${menuItem.name}|${menuItem.price}`} min='0'
+                                   value={menuItem.price}/>
                         </li>
                     ))}
                 </ul>
                 <div className={styles.action__buttons}>
                     <button type='submit' className='button__1'>Save changes</button>
-                    <button type='button' className='button__1'>Add an item</button>
+                    <button type='button' className='button__1' onClick={() => setIsModalOpen(true)}>Add an item
+                    </button>
                 </div>
             </form>
+            {isModalOpen &&
+                <AddItemModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAddItem={handleAddItem}/>}
         </div>
     );
 }

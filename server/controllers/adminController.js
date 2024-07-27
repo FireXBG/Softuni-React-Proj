@@ -43,11 +43,21 @@ router.post('/updateMenu', async (req, res) => {
         console.error('Error updating menu:', error);
         res.status(400).json({message: error.message});
     }
-})
+});
+
+router.post('/addMenuItem', async (req, res) => {
+    const {name, price} = req.body;
+    try {
+        const newMenuItem = await adminServices.addMenuItem({name, price});
+        res.status(200).json(newMenuItem);
+    } catch (error) {
+        console.error('Error adding menu item:', error);
+        res.status(400).json({message: error.message});
+    }
+});
 
 router.post('/updateInfo', async (req, res) => {
     const {name, address1, address2, phone} = req.body;
-    console.log('updateInfo', req.body)
     try {
         const result = await adminServices.updateInfo({name, address1, address2, phone});
         res.status(200).json(result);

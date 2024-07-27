@@ -1,11 +1,36 @@
-import { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { jsPDF } from 'jspdf';
+import {useEffect, useState, useRef} from 'react';
+import {useNavigate} from 'react-router-dom';
+import {jsPDF} from 'jspdf';
 
-export default function CloseTable({ table }) {
+export default function CloseTable({table}) {
     const [countdown, setCountdown] = useState(5);
+    const [restaurantInfo, setRestaurantInfo] = useState({
+        name: '',
+        addressLine1: '',
+        addressLine2: '',
+        phoneNo: ''
+    });
     const receiptGenerated = useRef(false);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchRestaurantInfo = async () => {
+            try {
+                const response = await fetch('http://localhost:3001/api/admin/info');
+                const data = await response.json();
+                setRestaurantInfo({
+                    name: data.name || '',
+                    addressLine1: data.addressLine1 || '',
+                    addressLine2: data.addressLine2 || '',
+                    phoneNo: data.phoneNo || ''
+                });
+            } catch (error) {
+                console.error('Error fetching restaurant info:', error);
+            }
+        };
+
+        fetchRestaurantInfo();
+    }, []);
 
     useEffect(() => {
         const generateReceipt = async () => {
@@ -24,14 +49,14 @@ export default function CloseTable({ table }) {
                 doc.setFont('courier', 'normal');
 
                 doc.setFontSize(16);
-                doc.text('Restaurant Name', pageWidth / 2, y, { align: 'center' });
+                doc.text(restaurantInfo.name, pageWidth / 2, y, {align: 'center'});
                 y += lineHeight;
                 doc.setFontSize(12);
-                doc.text('Address Line 1', pageWidth / 2, y, { align: 'center' });
+                doc.text(restaurantInfo.addressLine1, pageWidth / 2, y, {align: 'center'});
                 y += lineHeight;
-                doc.text('Address Line 2', pageWidth / 2, y, { align: 'center' });
+                doc.text(restaurantInfo.addressLine2, pageWidth / 2, y, {align: 'center'});
                 y += lineHeight;
-                doc.text('Phone Number', pageWidth / 2, y, { align: 'center' });
+                doc.text(restaurantInfo.phoneNo, pageWidth / 2, y, {align: 'center'});
                 y += lineHeight * 2;
 
                 doc.setFontSize(12);
@@ -58,7 +83,7 @@ export default function CloseTable({ table }) {
 
                 y += lineHeight * 2;
                 doc.setFontSize(10);
-                doc.text('Thank you for dining with us!', pageWidth / 2, y, { align: 'center' });
+                doc.text('Thank you for dining with us!', pageWidth / 2, y, {align: 'center'});
 
                 const pdfUrl = doc.output('bloburl');
                 window.open(pdfUrl, '_blank');
@@ -68,7 +93,7 @@ export default function CloseTable({ table }) {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ tableNumber: table.tableNumber })
+                    body: JSON.stringify({tableNumber: table.tableNumber})
                 });
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -95,7 +120,7 @@ export default function CloseTable({ table }) {
         return () => {
             console.log('CloseTable component unmounted');
         };
-    }, [countdown, navigate, table]);
+    }, [countdown, navigate, table, restaurantInfo]);
 
     return (
         <div>

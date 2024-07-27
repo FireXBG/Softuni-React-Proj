@@ -13,6 +13,7 @@ exports.deleteTable = async (data) => {
         throw new Error(error);
     }
 };
+
 exports.addTable = async (data) => {
     const tableNumber = data.tableNumber;
 
@@ -28,13 +29,19 @@ exports.addTable = async (data) => {
         throw new Error(error.message);
     }
 };
+
 exports.updateMenu = async (data) => {
     const menuItems = data.menu;
 
     try {
         for (let menuItem of menuItems) {
             const {_id, name, price} = menuItem;
-            await Menu.findByIdAndUpdate(_id, {name, price}, {new: true, useFindAndModify: false});
+            if (_id) {
+                await Menu.findByIdAndUpdate(_id, {name, price}, {new: true, useFindAndModify: false});
+            } else {
+                const newMenuItem = new Menu({name, price});
+                await newMenuItem.save();
+            }
         }
 
         const updatedMenu = await Menu.find({});
@@ -43,7 +50,21 @@ exports.updateMenu = async (data) => {
         console.error('Error updating menu:', error.message);
         throw new Error('Error updating menu');
     }
-}
+};
+
+exports.addMenuItem = async (data) => {
+    const {name, price} = data;
+
+    try {
+        const newMenuItem = new Menu({name, price});
+        await newMenuItem.save();
+        return newMenuItem;
+    } catch (error) {
+        console.error('Error adding menu item:', error.message);
+        throw new Error('Error adding menu item');
+    }
+};
+
 exports.updateInfo = async (data) => {
     const {name, address1, address2, phone} = data;
 
