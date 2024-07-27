@@ -23,13 +23,13 @@ export default function AdminUserModal({onClose, onSuccess}) {
                 setError('');
                 setUsername('');
                 setPassword('');
-                setRole('user'); // Reset role to default
-                onSuccess(); // Call the success handler to refresh user list
+                setRole('user');
+                onSuccess();
                 setShowSuccess(true);
                 setTimeout(() => {
                     setShowSuccess(false);
-                    onClose(); // Close the modal after showing success message
-                }, 3000); // Hide success message after 3 seconds
+                    onClose();
+                }, 3000);
             } else {
                 setError('Failed to authorize user');
             }
@@ -46,8 +46,8 @@ export default function AdminUserModal({onClose, onSuccess}) {
         <div className={styles.modalOverlay}>
             {showSuccess && <SuccessOperation/>}
             <div className={styles.modalContent}>
-                <h2>Authorize New User</h2>
-                <form onSubmit={handleSubmit}>
+                <h2 className={styles.mainHeader}>Authorize New User</h2>
+                <form className={styles.form} onSubmit={handleSubmit}>
                     <input
                         type="text"
                         placeholder="Username"
@@ -65,17 +65,20 @@ export default function AdminUserModal({onClose, onSuccess}) {
                     <select
                         value={role}
                         onChange={(e) => setRole(e.target.value)}
+                        className={styles.select}
                         required
                     >
                         <option value="user">User</option>
                         <option value="admin">Admin</option>
                     </select>
-                    <button type="submit">Authorize User</button>
-                    <button type="button" onClick={() => {
-                        setError('');
-                        onClose();
-                    }}>Cancel
-                    </button>
+                    <div className={styles.button__wrapper}>
+                        <button type="submit" className='button__1'>Authorize User</button>
+                        <button type="button" className='button__1' onClick={() => {
+                            setError('');
+                            onClose();
+                        }}>Cancel
+                        </button>
+                    </div>
                 </form>
                 {error && <p className={styles.error}>{error}</p>}
             </div>

@@ -18,8 +18,8 @@ export default function ChangePassModal({user, onClose}) {
             if (response.status === 200) {
                 setError('');
                 setShowSuccess(true);
-                setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
-                onClose(true); // Close the modal immediately
+                setTimeout(() => setShowSuccess(false), 3000);
+                onClose(true);
             } else {
                 setError('Failed to change password');
             }
@@ -34,8 +34,8 @@ export default function ChangePassModal({user, onClose}) {
             {showSuccess && <SuccessOperation/>}
             <div className={styles.modalOverlay}>
                 <div className={styles.modalContent}>
-                    <h2>Change Password for {user.username}</h2>
-                    <form onSubmit={handleSubmit}>
+                    <h2 className={styles.main__heading}>Change Password for {user.username}</h2>
+                    <form className={styles.form} onSubmit={handleSubmit}>
                         <input
                             type="password"
                             placeholder="New Password"
@@ -43,12 +43,15 @@ export default function ChangePassModal({user, onClose}) {
                             onChange={(e) => setNewPassword(e.target.value)}
                             required
                         />
-                        <button type="submit">Change Password</button>
-                        <button type="button" onClick={() => {
-                            setError('');
-                            onClose(false);
-                        }}>Cancel
-                        </button>
+                        <div className={styles.button__wrapper}>
+                            <button type="submit" className="button__1">Change Password</button>
+                            <button type="button" className="button__1" onClick={() => {
+                                setError('');
+                                onClose(false);
+                            }}>Cancel
+                            </button>
+                        </div>
+
                     </form>
                     {error && <p className={styles.error}>{error}</p>}
                 </div>

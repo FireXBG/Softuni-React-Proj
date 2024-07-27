@@ -63,7 +63,7 @@ export default function AdminMenu() {
             const updatedMenu = response.data;
             setMenu(updatedMenu);
             setShowSuccess(true);
-            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
+            setTimeout(() => setShowSuccess(false), 3000);
         } catch (error) {
             console.error('Error saving changes:', error.message);
         }
@@ -78,7 +78,7 @@ export default function AdminMenu() {
         const addedItem = response.data;
         setMenu([...menu, addedItem]);
         setShowSuccess(true);
-        setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
+        setTimeout(() => setShowSuccess(false), 3000);
     };
 
     const handleDeleteItem = async (itemId) => {
@@ -91,7 +91,7 @@ export default function AdminMenu() {
             setMenu(menu.filter(item => item._id !== itemId));
             console.log('Item deleted successfully');
             setShowSuccess(true);
-            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
+            setTimeout(() => setShowSuccess(false), 3000);
         } catch (error) {
             console.error('Error deleting item:', error.message);
         }
@@ -106,15 +106,18 @@ export default function AdminMenu() {
                     {menu.map((menuItem) => (
                         <li key={menuItem._id} className={styles.menu__li}>
                             <label htmlFor={menuItem._id}>{menuItem.name}:</label>
-                            <input
-                                onChange={handleChanges}
-                                type='number'
-                                step="0.01"
-                                id={menuItem._id}
-                                name={`${menuItem._id}|${menuItem.name}`}
-                                min='0'
-                                value={menuItem.price}
-                            />
+                            <div className={styles.input__wrapper}>
+                                <span className={styles.currency__symbol}>$</span>
+                                <input
+                                    onChange={handleChanges}
+                                    type='number'
+                                    step="0.01"
+                                    id={menuItem._id}
+                                    name={`${menuItem._id}|${menuItem.name}`}
+                                    min='0'
+                                    value={menuItem.price}
+                                />
+                            </div>
                             <button type="button" className='button__1' onClick={() => handleDeleteItem(menuItem._id)}>
                                 Delete
                             </button>

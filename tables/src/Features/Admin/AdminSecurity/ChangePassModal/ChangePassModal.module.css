@@ -19,10 +19,35 @@
     text-align: center;
 }
 
+.main__heading {
+    font-size: 1.5vw;
+    margin-bottom: 1vw;
+}
+
 .error {
     color: red;
 }
 
 .success {
     color: green;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5vw;
+}
+
+.form input {
+    width: 100%;
+    padding: 0.5vw;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button__wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
 }

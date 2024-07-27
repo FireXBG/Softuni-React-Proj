@@ -1,8 +1,8 @@
 import styles from './AddOrder.module.css';
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
 
-export default function AddOrder({ tableNumber, onOrderPlaced }) {
+export default function AddOrder({tableNumber, onOrderPlaced}) {
     const [menu, setMenu] = useState([]);
 
     useEffect(() => {
@@ -56,8 +56,10 @@ export default function AddOrder({ tableNumber, onOrderPlaced }) {
                 <ul>
                     {menu.map((menuItem) => (
                         <li key={menuItem._id} className={styles.menu__li}>
-                            <label htmlFor={menuItem._id}>{menuItem.name} - {menuItem.price} $</label>
-                            <input type='number' id={menuItem._id} name={`${menuItem._id}|${menuItem.name}|${menuItem.price}`} min='0' defaultValue='0' />
+                            <label htmlFor={menuItem._id}>{menuItem.name} - ${menuItem.price}</label>
+                            <input type='number' id={menuItem._id}
+                                   name={`${menuItem._id}|${menuItem.name}|${menuItem.price}`} min='0'
+                                   defaultValue='0'/>
                         </li>
                     ))}
                 </ul>

@@ -22,12 +22,12 @@ const AddItemModal = ({isOpen, onClose, onAddItem}) => {
                     <h2>Add New Item</h2>
                     <form onSubmit={handleSubmit}>
                         <label>
-                            Item Name:
-                            <input type="text" value={name} onChange={(e) => setName(e.target.value)} required/>
+                            <input type="text" placeholder='Item Name' value={name}
+                                   onChange={(e) => setName(e.target.value)} required/>
                         </label>
                         <label>
-                            Price:
-                            <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} required
+                            <input type="number" placeholder='Name' value={price}
+                                   onChange={(e) => setPrice(e.target.value)} required
                                    min="0" step="0.01"/>
                         </label>
                         <div className={styles.modalActions}>
