@@ -67,4 +67,14 @@ router.post('/closeTable', async (req, res) => {
     }
 })
 
+router.delete('/deleteOrder/:orderId', async (req, res) => {
+    const orderId = req.params.orderId;
+    try {
+        const result = await tablesServices.deleteOrder(orderId);
+        res.status(200).json({message: result});
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).json({error: error.message});
+    }
+});
 module.exports = router;

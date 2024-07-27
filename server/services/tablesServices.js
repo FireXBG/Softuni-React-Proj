@@ -1,5 +1,6 @@
 const tables = require('../models/tablesSchema');
 const menu = require('../models/menuSchema');
+const mongoose = require('mongoose');
 
 exports.getTables = async () => {
     try {
@@ -12,7 +13,7 @@ exports.getTables = async () => {
 
 exports.getTable = async (tableNumber) => {
     try {
-        const table = await tables.findOne({ tableNumber });
+        const table = await tables.findOne({tableNumber});
         if (!table) {
             throw new Error('Table not found');
         }
@@ -34,10 +35,10 @@ exports.getMenu = async () => {
 
 exports.getTableByNumber = async (tableNumber) => {
     try {
-        const table = await tables.findOne({ tableNumber });
+        const table = await tables.findOne({tableNumber});
         // Replace orders with the actual order objects
         const IDs = table.orders;
-        const orders = await menu.find({ _id: { $in: IDs } });
+        const orders = await menu.find({_id: {$in: IDs}});
         table.orders = orders;
         console.log(table);
         return table;
@@ -48,7 +49,7 @@ exports.getTableByNumber = async (tableNumber) => {
 
 exports.makeOrder = async (tableNumber, orders) => {
     try {
-        const table = await tables.findOne({ tableNumber });
+        const table = await tables.findOne({tableNumber});
 
         orders.forEach((newOrder) => {
             const existingOrder = table.orders.find(order => order.name === newOrder.name);
@@ -68,7 +69,7 @@ exports.makeOrder = async (tableNumber, orders) => {
 
 exports.closeTable = async (tableNumber) => {
     try {
-        const table = await tables.findOne({ tableNumber });
+        const table = await tables.findOne({tableNumber});
         table.isTaken = false;
         table.orders = [];
         await table.save();
@@ -80,11 +81,33 @@ exports.closeTable = async (tableNumber) => {
 
 exports.takeTable = async (tableNumber) => {
     try {
-        const table = await tables.findOne({ tableNumber });
+        const table = await tables.findOne({tableNumber});
         table.isTaken = true;
         await table.save();
         return 'Table is now taken';
     } catch (error) {
         throw new Error(error);
+    }
+};
+
+exports.deleteOrder = async (orderId) => {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(orderId)) {
+            throw new Error('Invalid order ID');
+        }
+
+        const table = await tables.findOneAndUpdate(
+            {'orders._id': new mongoose.Types.ObjectId(orderId)}, // Ensure 'new' keyword is used
+            {$pull: {orders: {_id: new mongoose.Types.ObjectId(orderId)}}}, // Ensure 'new' keyword is used
+            {new: true}
+        );
+
+        if (!table) {
+            throw new Error('Order not found');
+        }
+
+        return 'Order deleted';
+    } catch (error) {
+        throw new Error(error.message);
     }
 };
