@@ -75,6 +75,20 @@ export default function AdminMenu() {
         setMenu([...menu, addedItem]);
     }
 
+    const handleDeleteItem = async (itemId) => {
+        try {
+            const response = await axios.delete(`http://localhost:3001/api/admin/deleteMenuItem/${itemId}`);
+            if (response.status !== 200) {
+                throw new Error('Network response was not ok');
+            }
+
+            setMenu(menu.filter(item => item._id !== itemId));
+            console.log('Item deleted successfully');
+        } catch (error) {
+            console.error('Error deleting item:', error.message);
+        }
+    }
+
     return (
         <div className={styles.container}>
             <h1 className={styles.mainHeading}>Manage Menu</h1>
@@ -86,6 +100,9 @@ export default function AdminMenu() {
                             <input onChange={handleChanges} type='number' id={menuItem._id}
                                    name={`${menuItem._id}|${menuItem.name}|${menuItem.price}`} min='0'
                                    value={menuItem.price}/>
+                            <button type="button" className='button__1'
+                                    onClick={() => handleDeleteItem(menuItem._id)}>Delete
+                            </button>
                         </li>
                     ))}
                 </ul>

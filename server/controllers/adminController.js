@@ -77,4 +77,15 @@ router.get('/info', async (req, res) => {
     }
 });
 
+router.delete('/deleteMenuItem/:itemId', async (req, res) => {
+    const {itemId} = req.params;
+    try {
+        const result = await adminServices.deleteMenuItem(itemId);
+        res.status(200).json(result);
+    } catch (error) {
+        console.error('Error deleting menu item:', error);
+        res.status(400).json({message: error.message});
+    }
+});
+
 module.exports = router;

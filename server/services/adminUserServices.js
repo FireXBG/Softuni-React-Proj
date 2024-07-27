@@ -65,6 +65,16 @@ exports.addMenuItem = async (data) => {
     }
 };
 
+exports.deleteMenuItem = async (id) => {
+    try {
+        await Menu.findByIdAndDelete(id);
+        return {message: 'Menu item deleted successfully'}; // Optionally return a success message
+    } catch (error) {
+        console.error('Error deleting menu item:', error.message);
+        throw new Error('Error deleting menu item');
+    }
+};
+
 exports.updateInfo = async (data) => {
     const {name, address1, address2, phone} = data;
 
