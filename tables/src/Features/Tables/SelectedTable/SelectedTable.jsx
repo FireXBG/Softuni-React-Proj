@@ -62,7 +62,7 @@ export default function SelectedTable() {
                 console.log('Order deleted');
                 fetchTable();
                 setShowSuccess(true);
-                setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
+                setTimeout(() => setShowSuccess(false), 3000);
             }
         } catch (error) {
             console.error('Error:', error);

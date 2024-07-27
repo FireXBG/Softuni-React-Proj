@@ -62,7 +62,7 @@ export default function AdminInfo() {
             const response = await axios.post('http://localhost:3001/api/admin/updateInfo', data);
             console.log(response);
             setShowSuccess(true);
-            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
+            setTimeout(() => setShowSuccess(false), 3000);
         } catch (error) {
             console.error(error);
         }

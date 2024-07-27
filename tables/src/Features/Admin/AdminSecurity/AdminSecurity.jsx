@@ -37,7 +37,7 @@ export default function AdminSecurity() {
             setUsers(users.filter(user => user._id !== userId));
             console.log(`Deleted user with ID: ${userId}`);
             setShowSuccess(true);
-            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
+            setTimeout(() => setShowSuccess(false), 3000);
         } catch (error) {
             console.error('Error deleting user:', error);
         }
@@ -48,7 +48,7 @@ export default function AdminSecurity() {
         setSelectedUser(null);
         if (isSuccess) {
             setShowSuccess(true);
-            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
+            setTimeout(() => setShowSuccess(false), 3000);
         }
     };
 
@@ -61,7 +61,7 @@ export default function AdminSecurity() {
         if (isSuccess) {
             getUsers();
             setShowSuccess(true);
-            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
+            setTimeout(() => setShowSuccess(false), 3000);
         }
     };
 

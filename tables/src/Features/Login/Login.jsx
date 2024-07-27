@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import axios from 'axios';
 import AuthContext from '../../auth/authContext';
 import styles from './Login.module.css';
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export default function Login() {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { login } = useContext(AuthContext);
+    const {login} = useContext(AuthContext);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,9 +30,13 @@ export default function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:3001/api/auth/login', { username: selectedUser, password });
+            const response = await axios.post('http://localhost:3001/api/auth/login', {
+                username: selectedUser,
+                password
+            });
             if (response.status === 200) {
                 login(response.data.token);
+                navigate('/dashboard'); // Assuming you have a route to navigate to after login
             } else {
                 console.error('Login failed');
                 setError('Login failed. Please check your credentials.');
@@ -66,7 +70,9 @@ export default function Login() {
                 />
                 <button type="submit">Login</button>
             </form>
-            {error && <p className={styles.error}>{error}</p>}
+            <div className={styles.error__container}>
+                {error && <p className={`${styles.error} ${error ? styles.visible : ''}`}>{error}</p>}
+            </div>
         </div>
     );
 }

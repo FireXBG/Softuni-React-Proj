@@ -99,7 +99,7 @@ export default function CloseTable({table}) {
                     throw new Error('Network response was not ok');
                 }
 
-                receiptGenerated.current = true; // Set flag to true after generating receipt
+                receiptGenerated.current = true;
                 console.log('Receipt generated');
             } catch (error) {
                 console.log(error);

@@ -47,3 +47,7 @@
 .ul li button {
     margin-top: 0;
 }
+
+.errorMessage {
+    margin-top: 1vw;
+}
