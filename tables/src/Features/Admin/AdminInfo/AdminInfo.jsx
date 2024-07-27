@@ -3,6 +3,7 @@ import {useState, useEffect} from 'react';
 import axios from "axios";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import SuccessOperation from '../../../Core/SuccessOperation/SuccessOperation';
 
 export default function AdminInfo() {
     const [info, setInfo] = useState({
@@ -11,6 +12,7 @@ export default function AdminInfo() {
         addressLine2: '',
         phoneNo: '',
     });
+    const [showSuccess, setShowSuccess] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,6 +61,8 @@ export default function AdminInfo() {
         try {
             const response = await axios.post('http://localhost:3001/api/admin/updateInfo', data);
             console.log(response);
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
         } catch (error) {
             console.error(error);
         }
@@ -66,6 +70,7 @@ export default function AdminInfo() {
 
     return (
         <div className={styles.container}>
+            {showSuccess && <SuccessOperation/>}
             <h1 className={styles.mainHeading}>Admin Info</h1>
             <form className={styles.form} onSubmit={handleSubmit}>
                 <label>

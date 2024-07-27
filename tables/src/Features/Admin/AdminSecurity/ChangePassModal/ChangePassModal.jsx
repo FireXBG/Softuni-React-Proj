@@ -1,8 +1,8 @@
 import styles from './ChangePassModal.module.css';
-import { useState } from 'react';
+import {useState} from 'react';
 import axios from 'axios';
 
-export default function ChangePassModal({ user, onClose }) {
+export default function ChangePassModal({user, onClose}) {
     const [newPassword, setNewPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -17,6 +17,10 @@ export default function ChangePassModal({ user, onClose }) {
             if (response.status === 200) {
                 setSuccess('Password changed successfully');
                 setError('');
+                setTimeout(() => {
+                    onClose(true); // Close the modal after showing success message
+                    setSuccess(''); // Clear success message
+                }, 3000); // Hide success message after 3 seconds
             } else {
                 setError('Failed to change password');
                 setSuccess('');
@@ -41,7 +45,12 @@ export default function ChangePassModal({ user, onClose }) {
                         required
                     />
                     <button type="submit">Change Password</button>
-                    <button type="button" onClick={onClose}>Cancel</button>
+                    <button type="button" onClick={() => {
+                        setError('');
+                        setSuccess('');
+                        onClose(false);
+                    }}>Cancel
+                    </button>
                 </form>
                 {error && <p className={styles.error}>{error}</p>}
                 {success && <p className={styles.success}>{success}</p>}

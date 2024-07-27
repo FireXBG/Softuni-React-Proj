@@ -6,7 +6,7 @@ dotenv.config();
 
 exports.authorize = async (username, password) => {
     try {
-        const userInDb = await User.findOne({ username });
+        const userInDb = await User.findOne({username});
 
         if (!userInDb) {
             throw new Error('User not found! Contact your administrator!');
@@ -18,7 +18,7 @@ exports.authorize = async (username, password) => {
             throw new Error('Incorrect password');
         }
 
-        const token = jwt.sign({ username, role: userInDb.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({username, role: userInDb.role}, process.env.JWT_SECRET, {expiresIn: '1h'});
         return token;
     } catch (error) {
         console.error(error);
@@ -42,16 +42,16 @@ exports.verifyToken = async (token) => {
         if (decoded.exp * 1000 < Date.now()) {
             throw new Error('Token expired');
         }
-        return { role: decoded.role, isValid: true };
+        return {role: decoded.role, isValid: true};
     } catch (error) {
-        return { role: null, isValid: false };
+        return {role: null, isValid: false};
     }
 }
 
 exports.changePassword = async (userId, newPassword) => {
     try {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
-        await User.updateOne({ _id: userId }, { password: hashedPassword });
+        await User.updateOne({_id: userId}, {password: hashedPassword});
     } catch (error) {
         console.error(error);
         throw new Error('Server error');
@@ -61,10 +61,13 @@ exports.changePassword = async (userId, newPassword) => {
 exports.createUser = async (username, password, role) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ username, password: hashedPassword, role });
+        const newUser = new User({username, password: hashedPassword, role});
 
         await newUser.save();
     } catch (error) {
+        if (error.code === 11000) {
+            throw new Error('Username already exists');
+        }
         console.error(error);
         throw new Error('Server error');
     }
@@ -72,7 +75,7 @@ exports.createUser = async (username, password, role) => {
 
 exports.deleteUser = async (userId) => {
     try {
-        await User.deleteOne({ _id: userId });
+        await User.deleteOne({_id: userId});
     } catch (error) {
         console.error(error);
         throw new Error('Server error');

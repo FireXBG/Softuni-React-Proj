@@ -2,10 +2,12 @@ import styles from './AdminMenu.module.css';
 import {useState, useEffect} from "react";
 import axios from "axios";
 import AddItemModal from './AddItemModal/AddItemModal';
+import SuccessOperation from '../../../Core/SuccessOperation/SuccessOperation';
 
 export default function AdminMenu() {
     const [menu, setMenu] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
 
     useEffect(() => {
         const fetchMenu = async () => {
@@ -60,6 +62,8 @@ export default function AdminMenu() {
             console.log('Changes saved successfully');
             const updatedMenu = response.data;
             setMenu(updatedMenu);
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
         } catch (error) {
             console.error('Error saving changes:', error.message);
         }
@@ -73,6 +77,8 @@ export default function AdminMenu() {
 
         const addedItem = response.data;
         setMenu([...menu, addedItem]);
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
     };
 
     const handleDeleteItem = async (itemId) => {
@@ -84,6 +90,8 @@ export default function AdminMenu() {
 
             setMenu(menu.filter(item => item._id !== itemId));
             console.log('Item deleted successfully');
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
         } catch (error) {
             console.error('Error deleting item:', error.message);
         }
@@ -91,6 +99,7 @@ export default function AdminMenu() {
 
     return (
         <div className={styles.container}>
+            {showSuccess && <SuccessOperation/>}
             <h1 className={styles.mainHeading}>Manage Menu</h1>
             <form onSubmit={handleSubmit}>
                 <ul>

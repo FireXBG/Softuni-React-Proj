@@ -1,14 +1,17 @@
-import styles from './AdminSecurity.module.css';
-import {useEffect, useState} from "react";
+import {useEffect, useState} from 'react';
 import axios from 'axios';
 import ChangePassModal from './ChangePassModal/ChangePassModal';
 import AdminUserModal from './AuthUserModal/AuthUserModal';
+import SuccessOperation from '../../../Core/SuccessOperation/SuccessOperation';
+import styles from './AdminSecurity.module.css';
 
-export default function AdminSecurity(props) {
+export default function AdminSecurity() {
     const [users, setUsers] = useState([]);
     const [selectedUser, setSelectedUser] = useState(null);
     const [showPassModal, setShowPassModal] = useState(false);
     const [showUserModal, setShowUserModal] = useState(false);
+    const [showSuccess, setShowSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const getUsers = async () => {
         try {
@@ -33,26 +36,38 @@ export default function AdminSecurity(props) {
             await axios.delete(`http://localhost:3001/api/auth/deleteUser/${userId}`);
             setUsers(users.filter(user => user._id !== userId));
             console.log(`Deleted user with ID: ${userId}`);
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
         } catch (error) {
             console.error('Error deleting user:', error);
         }
     };
 
-    const handleClosePassModal = () => {
+    const handleClosePassModal = (isSuccess) => {
         setShowPassModal(false);
         setSelectedUser(null);
+        if (isSuccess) {
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
+        }
     };
 
     const handleAuthorizeUser = () => {
         setShowUserModal(true);
     };
 
-    const handleCloseUserModal = () => {
+    const handleCloseUserModal = (isSuccess) => {
         setShowUserModal(false);
+        if (isSuccess) {
+            getUsers();
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 3000); // Hide success message after 3 seconds
+        }
     };
 
     return (
         <div className={styles.container}>
+            {showSuccess && <SuccessOperation/>}
             <h1 className={styles.mainHeading}>Admin Security</h1>
             <div className={styles.mainContainer}>
                 <button onClick={handleAuthorizeUser} className='button__1'>Authorize a user</button>
@@ -67,6 +82,7 @@ export default function AdminSecurity(props) {
                         </li>
                     ))}
                 </ul>
+                {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
             </div>
             {showPassModal && selectedUser && (
                 <ChangePassModal
@@ -77,7 +93,7 @@ export default function AdminSecurity(props) {
             {showUserModal && (
                 <AdminUserModal
                     onClose={handleCloseUserModal}
-                    onSuccess={getUsers}
+                    onSuccess={() => handleCloseUserModal(true)}
                 />
             )}
         </div>
