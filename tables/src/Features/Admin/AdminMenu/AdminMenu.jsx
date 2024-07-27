@@ -43,7 +43,7 @@ export default function AdminMenu() {
         });
 
         setMenu(updatedMenu);
-    }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -63,7 +63,7 @@ export default function AdminMenu() {
         } catch (error) {
             console.error('Error saving changes:', error.message);
         }
-    }
+    };
 
     const handleAddItem = async (newItem) => {
         const response = await axios.post('http://localhost:3001/api/admin/addMenuItem', newItem);
@@ -73,7 +73,7 @@ export default function AdminMenu() {
 
         const addedItem = response.data;
         setMenu([...menu, addedItem]);
-    }
+    };
 
     const handleDeleteItem = async (itemId) => {
         try {
@@ -87,7 +87,7 @@ export default function AdminMenu() {
         } catch (error) {
             console.error('Error deleting item:', error.message);
         }
-    }
+    };
 
     return (
         <div className={styles.container}>
@@ -97,11 +97,17 @@ export default function AdminMenu() {
                     {menu.map((menuItem) => (
                         <li key={menuItem._id} className={styles.menu__li}>
                             <label htmlFor={menuItem._id}>{menuItem.name}:</label>
-                            <input onChange={handleChanges} type='number' id={menuItem._id}
-                                   name={`${menuItem._id}|${menuItem.name}|${menuItem.price}`} min='0'
-                                   value={menuItem.price}/>
-                            <button type="button" className='button__1'
-                                    onClick={() => handleDeleteItem(menuItem._id)}>Delete
+                            <input
+                                onChange={handleChanges}
+                                type='number'
+                                step="0.01"
+                                id={menuItem._id}
+                                name={`${menuItem._id}|${menuItem.name}`}
+                                min='0'
+                                value={menuItem.price}
+                            />
+                            <button type="button" className='button__1' onClick={() => handleDeleteItem(menuItem._id)}>
+                                Delete
                             </button>
                         </li>
                     ))}
@@ -112,8 +118,9 @@ export default function AdminMenu() {
                     </button>
                 </div>
             </form>
-            {isModalOpen &&
-                <AddItemModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAddItem={handleAddItem}/>}
+            {isModalOpen && (
+                <AddItemModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAddItem={handleAddItem}/>
+            )}
         </div>
     );
 }
