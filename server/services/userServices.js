@@ -81,3 +81,13 @@ exports.deleteUser = async (userId) => {
         throw new Error('Server error');
     }
 }
+
+exports.setDefaultAdmin = async () => {
+    const admin = await User.findOne({role: 'admin'});
+
+    if (!admin) {
+        const hashedPassword = await bcrypt.hash('admin', 10);
+        const newUser = new User({username: 'admin', password: hashedPassword, role: 'admin'});
+        await newUser.save();
+    }
+}
